@@ -6,9 +6,8 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Zend\Diactoros\Response\HtmlResponse;
 use Zend\Diactoros\Response\JsonResponse;
-use Zend\Expressive\Router;
-use Zend\Expressive\Template\TemplateRendererInterface;
 use Zend\Expressive\Router\RouterInterface;
+use Zend\Expressive\Template\TemplateRendererInterface;
 
 class IndexController
 {
@@ -17,7 +16,7 @@ class IndexController
     private $template;
 
     /**
-     * Index Controller constructor.
+     * IndexController constructor.
      *
      * @param RouterInterface $router
      * @param TemplateRendererInterface|null $template
@@ -53,6 +52,6 @@ class IndexController
             ]);
         }
 
-        return new HtmlResponse($this->template->render('app::home-page', $data));
+        return new HtmlResponse($this->template->render('app::index', $data));
     }
 }
