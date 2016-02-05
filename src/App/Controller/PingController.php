@@ -2,22 +2,49 @@
 
 namespace App\Controller;
 
-use Zend\Diactoros\Response\JsonResponse;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Zend\Diactoros\Response\HtmlResponse;
+use Zend\Diactoros\Response\JsonResponse;
+use Zend\Expressive\Template\TemplateRendererInterface;
 
-class PingController
+class PingController extends AbstractController
 {
+    private $template;
+
     /**
-     * Ping invoke controller.
+     * IndexController constructor.
      *
-     * @param ServerRequestInterface $request
-     * @param ResponseInterface $response
-     * @param callable|null $next
+     * @param TemplateRendererInterface|null $template
+     */
+    public function __construct(TemplateRendererInterface $template = null)
+    {
+        $this->template = $template;
+    }
+
+    /**
+     * Test action.
+     *
+     * @param $request
+     * @return HtmlResponse
+     */
+    public function dump(ServerRequestInterface $request)
+    {
+        $dump = print_r($this->template, true);
+
+        return new HtmlResponse($this->template->render('app::ping', compact('dump')));
+    }
+
+    /**
+     * Ping action.
+     *
      * @return JsonResponse
      */
-    public function __invoke(ServerRequestInterface $request, ResponseInterface $response, callable $next = null)
+    public function ping()
     {
-        return new JsonResponse(['ack' => time()]);
+        return new JsonResponse([
+            'ack' => time(),
+            'target' => __METHOD__
+        ]);
     }
 }

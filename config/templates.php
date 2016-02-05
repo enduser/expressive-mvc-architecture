@@ -20,7 +20,7 @@ return [
 
     'twig' => [
         'cache_dir' => 'data/cache/twig',
-        'assets_url' => '/',
+        'assets_url' => '/assets/',
         'assets_version' => null,
         'extensions' => [
             // extension service names or instances

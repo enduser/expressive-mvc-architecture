@@ -9,7 +9,7 @@ use Zend\Diactoros\Response\JsonResponse;
 use Zend\Expressive\Router\RouterInterface;
 use Zend\Expressive\Template\TemplateRendererInterface;
 
-class IndexController
+class IndexController extends AbstractController
 {
     private $router;
 
@@ -28,14 +28,14 @@ class IndexController
     }
 
     /**
-     * Index Controller invoke.
+     * Index action.
      *
      * @param ServerRequestInterface $request
      * @param ResponseInterface $response
      * @param callable|null $next
      * @return HtmlResponse|JsonResponse
      */
-    public function __invoke(ServerRequestInterface $request, ResponseInterface $response, callable $next = null)
+    public function home(ServerRequestInterface $request, ResponseInterface $response, callable $next = null)
     {
         $data = [];
 

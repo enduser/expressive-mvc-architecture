@@ -5,10 +5,10 @@ return [
     'dependencies' => [
         'invokables' => [
             Zend\Expressive\Router\RouterInterface::class => Zend\Expressive\Router\FastRouteRouter::class,
-            App\Controller\PingController::class => App\Controller\PingController::class,
         ],
         'factories' => [
-            App\Controller\IndexController::class => App\Controller\IndexFactory::class,
+            App\Controller\IndexController::class => App\Controller\Factory\ControllerFactory::class,
+            App\Controller\PingController::class => App\Controller\Factory\ControllerFactory::class,
         ],
     ],
     // Routes settings
@@ -24,6 +24,12 @@ return [
             'path' => '/ping',
             'middleware' => App\Controller\PingController::class,
             'allowed_methods' => ['GET'],
+        ],
+        [
+            'name' => 'dump',
+            'path' => '/dump',
+            'middleware' => App\Controller\PingController::class,
+            'allowed_methods' => ['GET']
         ],
     ],
 ];
