@@ -2,10 +2,10 @@
 
 namespace App\Controller;
 
-use FastRoute\BadRouteException;
-use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Message\ResponseInterface as PsrResponseInterface;
 use Zend\Expressive\Router\RouteResult;
+use FastRoute\BadRouteException;
 use ReflectionMethod;
 
 /**
@@ -19,12 +19,12 @@ abstract class AbstractController
      * Invoke action controller.
      *
      * @param ServerRequestInterface $request
-     * @param ResponseInterface $response
+     * @param PsrResponseInterface $response
      * @param callable|null $next
      * @return mixed
      * @throws \Exception
      */
-    public function __invoke(ServerRequestInterface $request, ResponseInterface $response, callable $next = null)
+    public function __invoke(ServerRequestInterface $request, PsrResponseInterface $response, callable $next = null)
     {
         $name = $this->getMatchedRouteName($request);
 
@@ -53,5 +53,30 @@ abstract class AbstractController
 
         // Get route name
         return $route->getMatchedRouteName();
+    }
+
+    /**
+     * Json encode.
+     *
+     * Note: This method is not part of the PSR-7 standard.
+     *
+     * @param PsrResponseInterface $response
+     * @param  mixed $data The data
+     * @param  int $status The HTTP status code.
+     * @param  int $encodingOptions Json encoding options
+     * @return \Psr\Http\Message\MessageInterface
+     */
+    public function withJson(PsrResponseInterface $response, $data, $status = 200, $encodingOptions = 0)
+    {
+        $body = $response->getBody();
+        $body->rewind();
+        $body->write($json = json_encode($data, $encodingOptions));
+
+        // Ensure that the json encoding passed successfully
+        if ($json === false) {
+            throw new \RuntimeException(json_last_error_msg(), json_last_error());
+        }
+
+        return $response->withStatus($status)->withHeader('Content-Type', 'application/json;charset=utf-8');
     }
 }

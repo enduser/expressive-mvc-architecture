@@ -3,8 +3,8 @@
 namespace App\Controller\Factory;
 
 use Interop\Container\ContainerInterface;
-use ReflectionClass;
 use Zend\ServiceManager\Factory\AbstractFactoryInterface;
+use ReflectionClass;
 
 class ControllerFactory implements AbstractFactoryInterface
 {

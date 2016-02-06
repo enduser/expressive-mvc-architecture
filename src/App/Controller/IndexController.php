@@ -2,10 +2,8 @@
 
 namespace App\Controller;
 
-use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Zend\Diactoros\Response\HtmlResponse;
-use Zend\Diactoros\Response\JsonResponse;
+use Zend\Stratigility\Http\ResponseInterface;
 use Zend\Expressive\Router\RouterInterface;
 use Zend\Expressive\Template\TemplateRendererInterface;
 
@@ -32,26 +30,19 @@ class IndexController extends AbstractController
      *
      * @param ServerRequestInterface $request
      * @param ResponseInterface $response
-     * @param callable|null $next
-     * @return HtmlResponse|JsonResponse
+     * @return int
      */
-    public function home(ServerRequestInterface $request, ResponseInterface $response, callable $next = null)
+    public function home(ServerRequestInterface $request, ResponseInterface $response)
     {
-        $data = [];
+        $data = [
+            'routerName' => 'FastRoute',
+            'routerDocs' => 'https://github.com/nikic/FastRoute',
+            'templateName' => 'Twig',
+            'templateDocs' => 'http://twig.sensiolabs.org/documentation'
+        ];
 
-        $data['routerName'] = 'FastRoute';
-        $data['routerDocs'] = 'https://github.com/nikic/FastRoute';
+        $response->write($this->template->render('app::index', $data));
 
-        $data['templateName'] = 'Twig';
-        $data['templateDocs'] = 'http://twig.sensiolabs.org/documentation';
-
-        if (!$this->template) {
-            return new JsonResponse([
-                'welcome' => 'Congratulations! You have installed the zend-expressive skeleton application.',
-                'docsUrl' => 'zend-expressive.readthedocs.org',
-            ]);
-        }
-
-        return new HtmlResponse($this->template->render('app::index', $data));
+        return $response;
     }
 }
