@@ -2,8 +2,8 @@
 
 namespace App\Controller;
 
+use App\Controller\Provider\JsonRendererInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Psr\Http\Message\ResponseInterface as PsrResponseInterface;
 use Zend\Stratigility\Http\ResponseInterface;
 use Zend\Expressive\Template\TemplateRendererInterface;
 
@@ -12,14 +12,19 @@ class PingController extends AbstractController
     /** @var TemplateRendererInterface */
     private $template;
 
+    /** @var JsonRendererInterface */
+    private $json;
+
     /**
      * PingController constructor.
      *
      * @param TemplateRendererInterface|null $template
+     * @param JsonRendererInterface $json
      */
-    public function __construct(TemplateRendererInterface $template = null)
+    public function __construct(TemplateRendererInterface $template = null, JsonRendererInterface $json)
     {
         $this->template = $template;
+        $this->json = $json;
     }
 
     /**
@@ -33,25 +38,25 @@ class PingController extends AbstractController
     {
         $dump = print_r($this->template, true);
 
-        $response->write($this->template->render('app::ping', compact('dump')));
-
-        return $response;
+        return $response->write($this->template->render('app::ping', compact('dump')));
     }
 
     /**
      * Ping action.
      *
      * @param ServerRequestInterface $request
-     * @param PsrResponseInterface $response
+     * @param ResponseInterface $response
      * @return string
      */
-    public function ping(ServerRequestInterface $request, PsrResponseInterface $response)
+    public function ping(ServerRequestInterface $request, ResponseInterface $response)
     {
         $data = [
             'ack' => time(),
             'target' => __METHOD__
         ];
 
-        return $this->withJson($response, $data);
+        $response->write($this->json->render($data));
+
+        return $this->json->response($response);
     }
 }

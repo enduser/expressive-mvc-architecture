@@ -20,6 +20,9 @@ return [
         'factories' => [
             Application::class => ApplicationFactory::class,
             Helper\UrlHelper::class => Helper\UrlHelperFactory::class,
+            App\Controller\Provider\JsonRenderer::class => App\Controller\Factory\ProviderFactory::class,
+            App\Controller\Provider\JsonRendererInterface::class => App\Controller\Factory\InterfaceFactory::class,
+            App\Model\User::class => App\Model\Factory\ModelFactory::class,
         ],
     ],
 ];

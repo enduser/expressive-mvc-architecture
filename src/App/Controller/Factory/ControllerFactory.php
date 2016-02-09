@@ -9,7 +9,7 @@ use ReflectionClass;
 class ControllerFactory implements AbstractFactoryInterface
 {
     /**
-     * Invoke factory.
+     * Creates a new class instance from given arguments.
      *
      * @param ContainerInterface $container
      * @param string $requestedName

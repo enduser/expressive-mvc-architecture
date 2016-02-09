@@ -9,6 +9,7 @@ return [
         'factories' => [
             App\Controller\IndexController::class => App\Controller\Factory\ControllerFactory::class,
             App\Controller\PingController::class => App\Controller\Factory\ControllerFactory::class,
+            App\Controller\UserController::class => App\Controller\Factory\ControllerFactory::class,
         ],
     ],
     // Routes settings
@@ -29,6 +30,12 @@ return [
             'name' => 'dump',
             'path' => '/dump',
             'middleware' => App\Controller\PingController::class,
+            'allowed_methods' => ['GET']
+        ],
+        [
+            'name' => 'user',
+            'path' => '/user',
+            'middleware' => App\Controller\UserController::class,
             'allowed_methods' => ['GET']
         ],
     ],
